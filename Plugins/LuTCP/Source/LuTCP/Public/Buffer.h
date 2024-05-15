@@ -14,12 +14,12 @@ namespace LuTCP
 	// |                    |                  |                  |
 	// 0      <=      ReaderIndex   <=   WriterIndex    <=     size
 	//
-	// IdleBytes£º¿ÕÏĞ¿Õ¼ä£¬ÓÉÓÚÓÃ»§¶ÁÈ¡ÁË¿É¶Á¿Õ¼äÀïµÄÊı¾İ£¬ReaderIndex»áÍùºóÒÆ¶¯£¬ÔòÇ°Ãæ»á¿ÕÏĞ³öÀ´Ò»¶Î¿Õ¼ä¡£
-	// WritableBytes£ºĞÂµÄÊı¾İĞ´Èë¿ÉĞ´¿Õ¼ä£¬´ÓWriterIndex¿ªÊ¼¡£
+	// IdleBytesï¼šç©ºé—²ç©ºé—´ï¼Œç”±äºç”¨æˆ·è¯»å–äº†å¯è¯»ç©ºé—´é‡Œçš„æ•°æ®ï¼ŒReaderIndexä¼šå¾€åç§»åŠ¨ï¼Œåˆ™å‰é¢ä¼šç©ºé—²å‡ºæ¥ä¸€æ®µç©ºé—´ã€‚
+	// WritableBytesï¼šæ–°çš„æ•°æ®å†™å…¥å¯å†™ç©ºé—´ï¼Œä»WriterIndexå¼€å§‹ã€‚
 	class FBuffer
 	{
-		static const int8  ReserveSize = 8;    //BufferµÄ¿ªÊ¼Ô¤Áô8¸ö×Ö½ÚµÄ´óĞ¡£¬ÓÃ»§¿ÉÒÔ×Ô¶¨ÒåÕâ8¸ö×Ö½ÚµÄÓÃÍ¾¡£
-		static const int32 InitialSize = 1024; //BufferµÄ³õÊ¼´óĞ¡
+		static const int8  ReserveSize = 8;    //Bufferçš„å¼€å§‹é¢„ç•™8ä¸ªå­—èŠ‚çš„å¤§å°ï¼Œç”¨æˆ·å¯ä»¥è‡ªå®šä¹‰è¿™8ä¸ªå­—èŠ‚çš„ç”¨é€”ã€‚
+		static const int32 InitialSize = 1024; //Bufferçš„åˆå§‹å¤§å°
 
 		TArray<uint8> Data;
 		int32 ReaderIndex = ReserveSize;
@@ -32,17 +32,17 @@ namespace LuTCP
 			check(InInitialSize >= ReserveSize);
 		}
 
-		//µÃµ½¿É¶Á¿Õ¼ä´óĞ¡
+		//å¾—åˆ°å¯è¯»ç©ºé—´å¤§å°
 		int32 ReadableBytes() const
 		{
 			return WriterIndex - ReaderIndex;
 		}
-		//µÃµ½¿ÉĞ´¿Õ¼ä´óĞ¡
+		//å¾—åˆ°å¯å†™ç©ºé—´å¤§å°
 		int32 WritableBytes() const
 		{
 			return Data.Num() - WriterIndex;
 		}
-		//µÃµ½¿ÕÏĞ¿Õ¼äµÄ´óĞ¡
+		//å¾—åˆ°ç©ºé—²ç©ºé—´çš„å¤§å°
 		int32 IdleBytes() const
 		{
 			return ReaderIndex;
@@ -65,7 +65,7 @@ namespace LuTCP
 			if (InLen < ReadableBytes())
 				ReaderIndex += InLen;
 			else
-				EmptyAll();    //¿É¶Á¿Õ¼äÖĞµÄÊı¾İ¶ÁÍêÁË£¬»Ö¸´Ë÷Òı¡£
+				EmptyAll();    //å¯è¯»ç©ºé—´ä¸­çš„æ•°æ®è¯»å®Œäº†ï¼Œæ¢å¤ç´¢å¼•ã€‚
 		}
 
 		void EmptyAll()
@@ -76,14 +76,14 @@ namespace LuTCP
 
 		void EnsureWritableBytes(int32 InLen)
 		{
-			if (WritableBytes() < InLen)   //¿ÉĞ´¿Õ¼äÌ«Ğ¡£¬ÔòÕûÀíDataÊı×é£¬Ö±ÖÁÓĞĞèÒª³¤¶ÈµÄ¿ÉĞ´¿Õ¼ä
+			if (WritableBytes() < InLen)   //å¯å†™ç©ºé—´å¤ªå°ï¼Œåˆ™æ•´ç†Dataæ•°ç»„ï¼Œç›´è‡³æœ‰éœ€è¦é•¿åº¦çš„å¯å†™ç©ºé—´
 			{
 				MakeSpace(InLen);
 			}
 
 			check(WritableBytes() >= InLen);
 		}
-		//´ÓSocket¶ÁÈ¡Êı¾İ
+		//ä»Socketè¯»å–æ•°æ®
 		int32 RecvFormSocket(class FSocket* InSocket);
 
 		void Append(const uint8* InData, int32 InLen)
@@ -104,7 +104,7 @@ namespace LuTCP
 			return Data.GetData();
 		}
 
-		//ÕûÀíDataÊı×é£¬Ö±ÖÁÓĞĞèÒª³¤¶ÈµÄ¿ÉĞ´¿Õ¼ä
+		//æ•´ç†Dataæ•°ç»„ï¼Œç›´è‡³æœ‰éœ€è¦é•¿åº¦çš„å¯å†™ç©ºé—´
 		void MakeSpace(int32 InLen)
 		{
 			if (WritableBytes() + IdleBytes() < InLen + ReserveSize)

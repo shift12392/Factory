@@ -92,10 +92,10 @@ void UFactoryBoneNetComponent::TickComponent(float DeltaTime, ELevelTick TickTyp
 		TArray<uint8> DataBuffer;
 		FMemoryWriter MemWriter(DataBuffer);
 		MemWriter.SetWantBinaryPropertySerialization(true);
-		//Ð´°üÍ·
+		//å†™åŒ…å¤´
 		UFactoryNetSubsystem::WriteUDPPackageHeader(MemWriter, Header);
 
-		//Ð´¸ºÔØ
+		//å†™è´Ÿè½½
 		uint8 BoneNum = AllBones.Num();
 		MemWriter << BoneNum;
 		for (int32 i = 0; i < AllBones.Num(); ++i)

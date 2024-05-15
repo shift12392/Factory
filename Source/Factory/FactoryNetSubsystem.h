@@ -88,13 +88,13 @@ struct FFactoryUDPPackageLoad
 	TArray<uint8> LoadDatas;
 };
 
-//»úÆ÷ÊÖ±ÛµÄÔÚÏß×´Ì¬
+//æœºå™¨æ‰‹è‡‚çš„åœ¨çº¿çŠ¶æ€
 UENUM(BlueprintType)
 enum class ERobotState : uint8
 {
-	ERobotState_Stop,     //»úÆ÷Í£Ö¹
-	ERobotState_Wait,     //»úÆ÷ÕıÔÚµÈ´ı
-	ERobotState_Working   //»úÆ÷ÕıÔÚ¹¤×÷
+	ERobotState_Stop,     //æœºå™¨åœæ­¢
+	ERobotState_Wait,     //æœºå™¨æ­£åœ¨ç­‰å¾…
+	ERobotState_Working   //æœºå™¨æ­£åœ¨å·¥ä½œ
 };
 
 USTRUCT(BlueprintType)
@@ -109,7 +109,7 @@ struct FFactoryRobotData
 	ERobotState RobotState;
 
 	UPROPERTY()
-	int32 ProductNum = 0;     //»úÆ÷ÒÑ¾­´¦ÀíµÄ²úÆ·ÊıÁ¿
+	int32 ProductNum = 0;     //æœºå™¨å·²ç»å¤„ç†çš„äº§å“æ•°é‡
 };
 
 DECLARE_DYNAMIC_DELEGATE_OneParam(FTcpSocketDisconnectDelegate, int32, ConnectionId);
@@ -159,9 +159,9 @@ public:
 protected:
 	virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const;
 
-	//´¦ÀíĞÂµÄ¿Í»§¶ËÁ¬½ÓºÍ¿Í»§¶Ë¶Ë¿ÚÁ¬½Ó
+	//å¤„ç†æ–°çš„å®¢æˆ·ç«¯è¿æ¥å’Œå®¢æˆ·ç«¯ç«¯å£è¿æ¥
 	void OnTCPNetConnection(TSharedPtr<LuTCP::FNetConnection> InNetConn);
-	//ÊÕµ½¿Í»§¶ËÏûÏ¢
+	//æ”¶åˆ°å®¢æˆ·ç«¯æ¶ˆæ¯
 	void OnTCPMessage(TSharedPtr<LuTCP::FNetConnection> InNetConn, LuTCP::FBuffer InBuffer);
 
 #if 0

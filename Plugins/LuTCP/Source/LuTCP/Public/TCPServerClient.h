@@ -66,7 +66,7 @@ namespace LuTCP
 			EConnected,
 			EDisconnecting
 		};
-		std::atomic<EConnectionState> State = EConnectionState::EConnecting;   //UEµÄTAtomic<>ÒÑÆúÓÃ
+		std::atomic<EConnectionState> State = EConnectionState::EConnecting;   //UEçš„TAtomic<>å·²å¼ƒç”¨
 		FName ConnectionName;
 		FNetEventPublisher* NetEventPublisher = nullptr;
 		FUniqueSocket Socket;
@@ -88,9 +88,9 @@ namespace LuTCP
 		void Start_IOThread();
 		void Quit() { bQuit = true; }
 
-		FNetConnection_Delegate NetConnectionCallback;   //Á¬½Ó½¨Á¢/¶Ï¿ªÊÂ¼ş
-		FWriteComplete_Delegate WriteCompleteCallback;   //Ğ´Íê³ÉÊÂ¼ş
-		FMessage_Delegate       MessageCallback;         //À´×Ô¿Í»§¶ËµÄÏûÏ¢ÊÂ¼ş
+		FNetConnection_Delegate NetConnectionCallback;   //è¿æ¥å»ºç«‹/æ–­å¼€äº‹ä»¶
+		FWriteComplete_Delegate WriteCompleteCallback;   //å†™å®Œæˆäº‹ä»¶
+		FMessage_Delegate       MessageCallback;         //æ¥è‡ªå®¢æˆ·ç«¯çš„æ¶ˆæ¯äº‹ä»¶
 	private:
 		FTCPServer(const FTCPServer& InOther) = delete;
 		FTCPServer& operator=(const FTCPServer& InOther) = delete;
@@ -99,9 +99,9 @@ namespace LuTCP
 		void OnMessage_IOThread(TSharedPtr<FNetConnection> InNetConn, FBuffer& InBuffer);
 		void OnWriteComplete_IOThread(TSharedPtr<FNetConnection> InNetConn);
 
-		//ÊÕµ½ĞÂµÄ¿Í»§¶ËÁ¬½Ó¡£À´×ÔIOÏß³ÌµÄÊÂ¼ş»Øµ÷¡£
+		//æ”¶åˆ°æ–°çš„å®¢æˆ·ç«¯è¿æ¥ã€‚æ¥è‡ªIOçº¿ç¨‹çš„äº‹ä»¶å›è°ƒã€‚
 		void OnNewConnection_IOThread(FUniqueSocket InSocket, TSharedPtr<FInternetAddr> InAddr);
-		//ÒÆ³ı¿Í»§¶ËÁ¬½Ó
+		//ç§»é™¤å®¢æˆ·ç«¯è¿æ¥
 		void OnRemoveConnection_IOThread(TSharedPtr<FNetConnection> InNetCon);
 	private:
 		FNetEventPublisher *NetEventPublisher;
@@ -134,10 +134,10 @@ namespace LuTCP
 		void OnMessage_IOThread(TSharedPtr<class FNetConnection> InNetConn, FBuffer& InBuffer);
 		void OnWriteComplete_IOThread(TSharedPtr<class FNetConnection> InNetConn);
 
-		//ÊÕµ½ĞÂµÄ¿Í»§¶ËÁ¬½Ó¡£À´×ÔIOÏß³ÌµÄÊÂ¼ş»Øµ÷¡£
+		//æ”¶åˆ°æ–°çš„å®¢æˆ·ç«¯è¿æ¥ã€‚æ¥è‡ªIOçº¿ç¨‹çš„äº‹ä»¶å›è°ƒã€‚
 		void OnNewConnection_IOThread(FUniqueSocket InSocket);
 		void OnConnectFailed_IOThread();
-		//ÒÆ³ı¿Í»§¶ËÁ¬½Ó
+		//ç§»é™¤å®¢æˆ·ç«¯è¿æ¥
 		void OnRemoveConnection_IOThread(TSharedPtr<FNetConnection> InNetCon);
 
 	private:
@@ -158,7 +158,7 @@ namespace LuTCP
 		void WaitStopThread();
 
 	private:
-		//--  FRunnable½Ó¿Ú
+		//--  FRunnableæ¥å£
 		virtual bool Init() override
 		{
 			return true;
@@ -166,7 +166,7 @@ namespace LuTCP
 		virtual uint32 Run() override;
 		virtual void Stop() override { }
 		virtual void Exit() override { }
-		//-- FRunnable½Ó¿Ú
+		//-- FRunnableæ¥å£
 
 		void Quit_IOThread();
 	private:
@@ -184,7 +184,7 @@ namespace LuTCP
 		void WaitStopThread();
 
 	private:
-		//--  FRunnable½Ó¿Ú
+		//--  FRunnableæ¥å£
 		virtual bool Init() override
 		{
 			return true;
@@ -192,7 +192,7 @@ namespace LuTCP
 		virtual uint32 Run() override;
 		virtual void Stop() override { }
 		virtual void Exit() override { }
-		//-- FRunnable½Ó¿Ú
+		//-- FRunnableæ¥å£
 
 		void Quit_IOThread();
 	private:

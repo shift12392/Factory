@@ -7,8 +7,8 @@
 
 int32 LuTCP::FBuffer::RecvFormSocket(FSocket* InSocket)
 {
-	//ÔÚÕ»ÉÏ·ÖÅä64k´óÐ¡µÄBuffer£¬¾¡¿ÉÄÜµÄ¶àµÄ¶ÁÈ¡Êý¾Ý¡£
-    //Ïß³ÌÕ»Ä¬ÈÏ´óÐ¡Îª1MB¡£Èç¹û³öÏÖÕ»Òç³ö£¬³ÌÐò»á±À£¬ÕâÊ±¿ÉÒÔ°ÑTempBufferµÄ´óÐ¡¼õÐ¡µã¡£
+	//åœ¨æ ˆä¸Šåˆ†é…64kå¤§å°çš„Bufferï¼Œå°½å¯èƒ½çš„å¤šçš„è¯»å–æ•°æ®ã€‚
+    //çº¿ç¨‹æ ˆé»˜è®¤å¤§å°ä¸º1MBã€‚å¦‚æžœå‡ºçŽ°æ ˆæº¢å‡ºï¼Œç¨‹åºä¼šå´©ï¼Œè¿™æ—¶å¯ä»¥æŠŠTempBufferçš„å¤§å°å‡å°ç‚¹ã€‚
 	uint8 TempBuffer[65536];
 	int32 BytesRead = 0;
 	if (InSocket->Recv(TempBuffer, 65536, BytesRead))

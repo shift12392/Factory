@@ -78,9 +78,9 @@ void UFactoryPosNetComponent::TickComponent(float DeltaTime, ELevelTick TickType
 		FMemoryWriter MemWriter(LoadBuffer);
 		MemWriter.SetWantBinaryPropertySerialization(true);
 
-		//Ð´°üÍ·
+		//å†™åŒ…å¤´
 		UFactoryNetSubsystem::WriteUDPPackageHeader(MemWriter, Header);
-		//Ð´¸ºÔØ
+		//å†™è´Ÿè½½
 		UScriptStruct* MyStructStruct = FFactoryNetSinglePosePackage::StaticStruct();
 		//bool bUseBinary = MyStructStruct->UseBinarySerialization(MemWriter);
 		MyStructStruct->SerializeBin(MemWriter, &Data);

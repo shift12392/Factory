@@ -32,11 +32,11 @@ void UFactoryNetComponent::BeginPlay()
 		UDPSocket = UFactoryNetSubsystem::CreateSocket(TEXT(""), RobotPort, GetOwner()->GetName());
 		TwinServerAddr = NetSubSystem->TwinAddr;
 
-		//创建TCP网络IO线程
+		//鍒涘缓TCP缃戠粶IO绾跨▼
 		{
 			TUniquePtr<LuTCP::FNetEventPublisher> NetEventPublisher = MakeUnique<LuTCP::FNetEventPublisher>();
 
-			//服务端的地址
+			//鏈嶅姟绔殑鍦板潃
 			TSharedRef<FInternetAddr> ServerAddr = ISocketSubsystem::Get()->CreateInternetAddr(FNetworkProtocolTypes::IPv4);
 			ServerAddr->SetLoopbackAddress();
 			ServerAddr->SetPort(NetSubSystem->TwinPort);
@@ -46,7 +46,7 @@ void UFactoryNetComponent::BeginPlay()
 			TCPClient->NetConnectionCallback.BindUObject(this, &UFactoryNetComponent::OnNetConnection);
 
 			ClientIOThread.Reset(new LuTCP::FClientIOThreadRunnable(MoveTemp(TCPClient), MoveTemp(NetEventPublisher)));
-			ClientIOThread->StartIOThread();   //开启网络IO线程
+			ClientIOThread->StartIOThread();   //寮�鍚綉缁淚O绾跨▼
 		}
 	}
 }

@@ -15,11 +15,11 @@ class FACTORY_API UFactoryNetComponent : public UActorComponent
 	GENERATED_BODY()
 
 protected:
-	TSharedPtr<FInternetAddr> TwinServerAddr;    //ÂÏÉúÊÀ½çµÄIPµØÖ·
+	TSharedPtr<FInternetAddr> TwinServerAddr;    //å­ªç”Ÿä¸–ç•Œçš„IPåœ°å€
 	FUniqueSocket UDPSocket; 
 	uint32 NetPackageId = 0;
-	TUniquePtr<LuTCP::FClientIOThreadRunnable> ClientIOThread;   //TCPÍøÂçIOÏß³Ì
-	TWeakPtr<LuTCP::FNetConnection> ServerConnection;     //ÓëÂÏÉúÊÀ½çµÄÍøÂçÁ¬½Ó
+	TUniquePtr<LuTCP::FClientIOThreadRunnable> ClientIOThread;   //TCPç½‘ç»œIOçº¿ç¨‹
+	TWeakPtr<LuTCP::FNetConnection> ServerConnection;     //ä¸å­ªç”Ÿä¸–ç•Œçš„ç½‘ç»œè¿æ¥
 public:
 	UPROPERTY(BlueprintReadOnly)
 	ETwinWorldType TwinWorldType = ETwinWorldType::None;
@@ -33,11 +33,11 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	//´¦Àí·şÎñ¶ËµÄÁ¬½ÓºÍ¶Ï¿ª
+	//å¤„ç†æœåŠ¡ç«¯çš„è¿æ¥å’Œæ–­å¼€
 	void OnNetConnection(TSharedPtr<LuTCP::FNetConnection> InNetConn);
-	//ÊÕµ½·şÎñ¶ËÏûÏ¢
+	//æ”¶åˆ°æœåŠ¡ç«¯æ¶ˆæ¯
 	void OnMessage(TSharedPtr<LuTCP::FNetConnection> InNetConn, LuTCP::FBuffer InBuffer);
-	//·¢ËÍ»úÆ÷Êı¾İ
+	//å‘é€æœºå™¨æ•°æ®
 	UFUNCTION(BlueprintCallable)
 	void SendTCPMessage(FFactoryRobotData& InData);
 public:	
