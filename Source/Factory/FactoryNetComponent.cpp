@@ -76,17 +76,7 @@ void UFactoryNetComponent::OnNetConnection(TSharedPtr<LuTCP::FNetConnection> InN
 
 void UFactoryNetComponent::OnMessage(TSharedPtr<LuTCP::FNetConnection> InNetConn, LuTCP::FBuffer InBuffer)
 {
-	TArray<uint8> MessageData(InBuffer.Peek(), InBuffer.ReadableBytes());
 
-	FMemoryReader MReader(MessageData);
-	MReader.SetWantBinaryPropertySerialization(true);
-	UScriptStruct* MyStructStruct = FFactoryRobotData::StaticStruct();
-
-	FFactoryRobotData Data = {};
-	MyStructStruct->SerializeBin(MReader, &Data);
-
-	LuTCP::FBuffer SendBuffer;
-	SendBuffer.Append(MessageData.GetData(), MessageData.Num());
 }
 
 void UFactoryNetComponent::SendTCPMessage(FFactoryRobotData& InData)
@@ -95,16 +85,20 @@ void UFactoryNetComponent::SendTCPMessage(FFactoryRobotData& InData)
 	{
 		LuTCP::FBuffer Message;
 
+		//序列化InData得到一个字节数组
 		TArray<uint8> LoadBuffer;
 		FMemoryWriter MemWriter(LoadBuffer);
 		MemWriter.SetWantBinaryPropertySerialization(true);
-
 		UScriptStruct* MyStructStruct = FFactoryRobotData::StaticStruct();
 		MyStructStruct->SerializeBin(MemWriter, &InData);
 
+		//把字节数组放到Buffer中。
 		LuTCP::FBuffer MessageBuffer;
 		MessageBuffer.Append(LoadBuffer.GetData(), LoadBuffer.Num());
+		//在Buffer的头部预留字节中写入字节数组的大小
+		MessageBuffer.AddInt32ToReserve(LoadBuffer.Num());   
 
+		//发送
 		ServerConnection.Pin()->Send(MoveTemp(MessageBuffer));
 	}
 }

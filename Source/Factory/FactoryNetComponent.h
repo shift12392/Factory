@@ -33,13 +33,17 @@ protected:
 	virtual void BeginPlay() override;
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
+    
+	//发送机器数据
+	UFUNCTION(BlueprintCallable)
+	void SendTCPMessage(FFactoryRobotData& InData);
+
+private:
 	//处理服务端的连接和断开
 	void OnNetConnection(TSharedPtr<LuTCP::FNetConnection> InNetConn);
 	//收到服务端消息
 	void OnMessage(TSharedPtr<LuTCP::FNetConnection> InNetConn, LuTCP::FBuffer InBuffer);
-	//发送机器数据
-	UFUNCTION(BlueprintCallable)
-	void SendTCPMessage(FFactoryRobotData& InData);
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

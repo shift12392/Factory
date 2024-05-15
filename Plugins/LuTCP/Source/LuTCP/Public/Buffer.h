@@ -68,6 +68,14 @@ namespace LuTCP
 				EmptyAll();    //可读空间中的数据读完了，恢复索引。
 		}
 
+		void AddInt32ToReserve(int32 InValue)
+		{
+			int32 Len = sizeof(InValue);
+			check(IdleBytes() >= Len);
+			ReaderIndex -= Len;
+			FMemory::Memcpy(Begin() + ReaderIndex, &InValue, Len);
+		}
+
 		void EmptyAll()
 		{
 			ReaderIndex = ReserveSize;
