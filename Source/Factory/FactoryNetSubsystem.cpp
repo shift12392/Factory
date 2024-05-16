@@ -41,15 +41,18 @@ void UFactoryNetSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 
 			//创建TCPServer
 			{
+				//创建网络事件发布者
 				TUniquePtr<LuTCP::FNetEventPublisher> NetEventPublisher = MakeUnique<LuTCP::FNetEventPublisher>();
-
+				//创建IP地址
 				TSharedRef<FInternetAddr> LocalAddr = SocketSubsystem->CreateInternetAddr(FNetworkProtocolTypes::IPv4);
 				LocalAddr->SetAnyAddress();
 				LocalAddr->SetPort(TwinPort);
+				//创建FTCPServer
 				TUniquePtr<LuTCP::FTCPServer> TCPServer = MakeUnique<LuTCP::FTCPServer>(NetEventPublisher.Get(), LocalAddr);
 				TCPServer->MessageCallback.BindUObject(this, &UFactoryNetSubsystem::OnTCPMessage);
 				TCPServer->NetConnectionCallback.BindUObject(this, &UFactoryNetSubsystem::OnTCPNetConnection);
 
+				//由FServerIOThreadRunnable管理FTCPServer对象和FNetEventPublisher对象
 				ServerIOThread.Reset(new LuTCP::FServerIOThreadRunnable(MoveTemp(TCPServer), MoveTemp(NetEventPublisher)));
 				ServerIOThread->StartIOThread();   //开启网络IO线程
 			}
@@ -126,7 +129,9 @@ void UFactoryNetSubsystem::Deinitialize()
 
 	if (ServerIOThread.IsValid())
 	{
-		ServerIOThread->WaitStopThread();
+		//等待网络IO线程关闭
+		//同时关闭TCPServer。
+		ServerIOThread->WaitStopThread();    
 	}
 
 	TwinAddr.Reset();
@@ -260,14 +265,34 @@ void UFactoryNetSubsystem::OnTCPNetConnection(TSharedPtr<LuTCP::FNetConnection> 
 
 void UFactoryNetSubsystem::OnTCPMessage(TSharedPtr<LuTCP::FNetConnection> InNetConn, LuTCP::FBuffer InBuffer)
 {
-	TArray<uint8> MessageData(InBuffer.Peek(), InBuffer.ReadableBytes());
+	if (InBuffer.ReadableBytes() > 4)   
+	{
+		//得到消息最前面4个字节，这个4个字节是一个完成的消息的大小
+		const void* MessageSizePtr = InBuffer.Peek();
+		int32 MessageSize = *reinterpret_cast<const int32*>(MessageSizePtr);
+		if (MessageSize < 0)
+		{
+			InNetConn->ForceClose();
+			return;
+		}
+		
+		if (InBuffer.ReadableBytes() >= MessageSize + 4)
+		{
+			//已经收到了一个完整的消息，处理。
+			InBuffer.AddToReaderIndex(4);
 
-	FMemoryReader MReader(MessageData);
-	MReader.SetWantBinaryPropertySerialization(true);
-	UScriptStruct* MyStructStruct = FFactoryRobotData::StaticStruct();
-	FFactoryRobotData Data = {};
-	MyStructStruct->SerializeBin(MReader, &Data);
-	
-	//通知蓝图
-	OnRecvMessage(Data);
+			TArray<uint8> MessageData(InBuffer.Peek(), InBuffer.ReadableBytes());
+			InBuffer.AddToReaderIndex(MessageSize);
+
+			FMemoryReader MReader(MessageData);
+			MReader.SetWantBinaryPropertySerialization(true);
+			UScriptStruct* MyStructStruct = FFactoryRobotData::StaticStruct();
+			FFactoryRobotData Data = {};
+			MyStructStruct->SerializeBin(MReader, &Data);
+
+			//通知蓝图
+			OnRecvMessage(Data);
+		}
+
+	}
 }

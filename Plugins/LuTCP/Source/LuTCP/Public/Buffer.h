@@ -18,7 +18,7 @@ namespace LuTCP
 	// WritableBytes：新的数据写入可写空间，从WriterIndex开始。
 	class FBuffer
 	{
-		static const int8  ReserveSize = 8;    //Buffer的开始预留8个字节的大小，用户可以自定义这8个字节的用途。
+		static const int8  ReserveSize = 4;    //Buffer的开始预留4个字节的大小，用户可以自定义这4个字节的用途。
 		static const int32 InitialSize = 1024; //Buffer的初始大小
 
 		TArray<uint8> Data;

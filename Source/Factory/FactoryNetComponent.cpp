@@ -32,8 +32,9 @@ void UFactoryNetComponent::BeginPlay()
 		UDPSocket = UFactoryNetSubsystem::CreateSocket(TEXT(""), RobotPort, GetOwner()->GetName());
 		TwinServerAddr = NetSubSystem->TwinAddr;
 
-		//创建TCP网络IO线程
+		//创建客户端TCP
 		{
+			//创建网络事件发布者
 			TUniquePtr<LuTCP::FNetEventPublisher> NetEventPublisher = MakeUnique<LuTCP::FNetEventPublisher>();
 
 			//服务端的地址
@@ -41,10 +42,12 @@ void UFactoryNetComponent::BeginPlay()
 			ServerAddr->SetLoopbackAddress();
 			ServerAddr->SetPort(NetSubSystem->TwinPort);
 
+			//创建FTCPClient
 			TUniquePtr<LuTCP::FTCPClient> TCPClient = MakeUnique<LuTCP::FTCPClient>(NetEventPublisher.Get(), ServerAddr);
 			TCPClient->MessageCallback.BindUObject(this, &UFactoryNetComponent::OnMessage);
 			TCPClient->NetConnectionCallback.BindUObject(this, &UFactoryNetComponent::OnNetConnection);
 
+			//由FClientIOThreadRunnable管理FTCPClient对象和FNetEventPublisher对象
 			ClientIOThread.Reset(new LuTCP::FClientIOThreadRunnable(MoveTemp(TCPClient), MoveTemp(NetEventPublisher)));
 			ClientIOThread->StartIOThread();   //开启网络IO线程
 		}
