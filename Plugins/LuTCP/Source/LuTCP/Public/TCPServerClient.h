@@ -11,6 +11,8 @@
 #include "UObject/UnrealNames.h"
 #include "NetEventRunnable.h"
 #include "Buffer.h"
+#include "Acceptor.h"
+#include "Connector.h"
 
 namespace LuTCP
 {
