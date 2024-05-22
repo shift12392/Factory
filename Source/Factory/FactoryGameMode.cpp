@@ -2,6 +2,7 @@
 
 #include "FactoryGameMode.h"
 //#include "FactoryCharacter.h"
+#include "FactoryPlayerController.h"
 #include "UObject/ConstructorHelpers.h"
 
 AFactoryGameMode::AFactoryGameMode()
@@ -14,4 +15,6 @@ AFactoryGameMode::AFactoryGameMode()
 	//{
 	//	DefaultPawnClass = PlayerPawnBPClass.Class;
 	//}
+	PlayerControllerClass = AFactoryPlayerController::StaticClass();
+	
 }

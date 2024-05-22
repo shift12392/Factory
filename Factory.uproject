@@ -1,6 +1,6 @@
 {
 	"FileVersion": 3,
-	"EngineAssociation": "{B132A0A5-4DF8-F33D-4F6F-BBA541EE6380}",
+	"EngineAssociation": "{7131C4ED-48B3-BF87-A6FE-0A887423C925}",
 	"Category": "",
 	"Description": "",
 	"Modules": [
@@ -9,8 +9,7 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"AdditionalDependencies": [
-				"Engine",
-				"ChaosVehicles"
+				"Engine"
 			]
 		}
 	],
@@ -20,6 +19,18 @@
 			"Enabled": true,
 			"TargetAllowList": [
 				"Editor"
+			]
+		},
+		{
+			"Name": "CesiumForUnreal",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/content/87b0d05800a545d49bf858ef3458c4f7",
+			"SupportedTargetPlatforms": [
+				"Win64",
+				"Mac",
+				"Linux",
+				"Android",
+				"IOS"
 			]
 		}
 	]
