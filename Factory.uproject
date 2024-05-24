@@ -32,6 +32,13 @@
 				"Android",
 				"IOS"
 			]
+		},
+		{
+			"Name": "ChaosCloth",
+			"Enabled": false
 		}
+	],
+	"TargetPlatforms": [
+		"Windows"
 	]
 }
