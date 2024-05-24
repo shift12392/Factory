@@ -1,6 +1,19 @@
 TCP网络通信插件在Plugins/LuTCP。
 
-使用示例如下。
+# 相关类
+
+* **FNetEventPublisher**：网络事件发布者，主要使用WSAPoll函数对网络事件监听，然后收到的网络事件之后，通知订阅者。
+* **FChannel**：网络事件订阅者，每个FChannel对象都处理唯一的一个Socket。
+* **FAcceptor**：TCPServer用，处理客户端连接，收到客户端连接之后，创建FNetConnection对象，直接给FTCPServer。
+* **FConnector**：TCPClient用，处理连接到服务端，连接成功，创建FNetConnection对象，给FTCPClient。
+* **FNetConnection**：网络连接对象，用户使用这个对象发送数据，关闭连接。
+* **FTCPServer**：使用FAcceptor处理客户端连接，管理收到的客户端连接对象（FNetConnection）。用户可以在FTCPServer对象中注册“收到网络数据（MessageCallback）”回调函数，等收到了网络数据，通知用户。
+* **FTCPClient**：使用FConnector连接到服务端，管理收到的服务的连接对象（FNetConnection）。用户可以在FTCPClient对象中注册“收到网络数据（MessageCallback）”回调函数，等收到了网络数据，通知用户。
+* **FBuffer**：发送和接受的网络数据用到的数据Buffer。
+
+
+
+# 使用示例
 
 服务端初始化（见UFactoryNetSubsystem::Initialize函数）：
 ```cpp
