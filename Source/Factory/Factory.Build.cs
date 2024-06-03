@@ -10,6 +10,6 @@ public class Factory : ModuleRules
 
 		PublicDependencyModuleNames.AddRange(new string[] 
 		{ "Core", "CoreUObject", "Engine", "InputCore", "EnhancedInput",
-			"Sockets","Networking","LuTCP" });
+			"Sockets","Networking","LuTCP","ProceduralMeshComponent" });
 	}
 }

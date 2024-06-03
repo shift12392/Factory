@@ -7,11 +7,13 @@
 #include "FactoryNetSubsystem.h"
 #include "FactoryRealActor.generated.h"
 
+
+
 UCLASS()
 class FACTORY_API AFactoryRealActor : public AActor
 {
 	GENERATED_BODY()
-	
+
 public:
 	UPROPERTY(EditAnywhere)
 	FName RobotName;
