@@ -36,6 +36,10 @@
 		{
 			"Name": "ChaosCloth",
 			"Enabled": false
+		},
+		{
+			"Name": "MuduoNet",
+			"Enabled": true
 		}
 	],
 	"TargetPlatforms": [

@@ -1,0 +1,33 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "0.1.0",
+	"FriendlyName": "MuduoNet",
+	"Description": "Cross-platform muduo-style Reactor network library. Win64 uses WSAPoll (level triggered), Linux uses epoll (level triggered).",
+	"Category": "Networking",
+	"CreatedBy": "",
+	"CreatedByURL": "",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"SupportURL": "",
+	"CanContainContent": false,
+	"IsBetaVersion": true,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"PlatformAllowList": [
+		"Win64",
+		"Linux"
+	],
+	"Modules": [
+		{
+			"Name": "MuduoCore",
+			"Type": "Runtime",
+			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "MuduoUE",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	]
+}
